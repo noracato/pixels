@@ -1,48 +1,49 @@
 let squareViewWidth = 2;
 let squareWidth = $(window).width() / (100/ squareViewWidth);
+let totalWidth = $(window).width();
 
 $( document ).ready(fillScreen);
-$( document ).click(setupAudio);
+// $( document ).click(setupAudio);
 ////////////////////
 
-let audioCtx;
-let analyser;
+// let audioCtx;
+// let analyser;
 
-// get the audio element
-let audioElement = (new Audio('assets/ambient piace2.wav'));
+// // get the audio element
+// let audioElement = (new Audio('assets/ambient piace2.wav'));
 
-// pass it into the audio context
-let track;
+// // pass it into the audio context
+// let track;
 
-let playing = false;
-let setup = false;
+// let playing = false;
+// let setup = false;
 
-function setupAudio() {
-    if (!setup){
-        audioCtx = new AudioContext();
-        analyser = audioCtx.createAnalyser();
-        // audioElement= document.querySelector("audio");
-        track = audioCtx.createMediaElementSource(audioElement);
-        track.connect(audioCtx.destination);
-        setup = true;
-    }
+// function setupAudio() {
+//     if (!setup){
+//         audioCtx = new AudioContext();
+//         analyser = audioCtx.createAnalyser();
+//         // audioElement= document.querySelector("audio");
+//         track = audioCtx.createMediaElementSource(audioElement);
+//         track.connect(audioCtx.destination);
+//         setup = true;
+//     }
 
-    console.log('playing')
+//     console.log('playing')
 
-    // Check if context is in suspended state (autoplay policy)
-    if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-    }
+//     // Check if context is in suspended state (autoplay policy)
+//     if (audioCtx.state === "suspended") {
+//         audioCtx.resume();
+//     }
 
-    // Play or pause track depending on state
-    if (!playing) {
-        audioElement.play();
-        playing = true;
-    } else {
-        audioElement.pause();
-        playing = false;
-    }
-}
+//     // Play or pause track depending on state
+//     if (!playing) {
+//         audioElement.play();
+//         playing = true;
+//     } else {
+//         audioElement.pause();
+//         playing = false;
+//     }
+// }
 
 
 ///////////////
@@ -54,7 +55,7 @@ function fillScreen() {
         addRow(i);
     }
 
-    flipRandomSquares(amount * 140);
+    flipRandomSquares(amount * 50);
 
     let squares = $('.square');
     setInterval(function(){
@@ -76,21 +77,33 @@ function flipRandomSquares(amount) {
 }
 
 function addRow(i) {
+    totalWidth = $(window).width();
     let amount = 100 / squareViewWidth;
     let row = $('<div></div>');
     row.addClass('row');
     row.data('number', i);
-    for (var i=0; i < amount; i++) {
-        createSquare(row, i);
+    let go = createSquare(row, 0);
+    while (go) {
+        go = createSquare(row, 0);
     }
 
     $('.container').append(row);
 }
 
 function createSquare(row, i){
+    if (totalWidth < 10){
+        return false;
+    }
     let sq = $('<div></div>');
     sq.addClass('square');
     sq.addClass('state-1');
+    let bullshit = Math.floor(Math.random() * 120);
+    totalWidth -= bullshit;
+    // bullshit = $(window).width() / bullshit;
+    sq.css('width',  bullshit + 'px');
+    let bullshitMore = Math.floor(Math.random() * 120);
+    sq.css('height',  bullshitMore + 'px');
+
     sq.data('number', i);
     sq.mouseenter(function() {
         flipColumn(sq);
@@ -99,6 +112,8 @@ function createSquare(row, i){
     addBrightness(sq);
 
     row.append(sq);
+
+    return true;
 }
 
 // Without classes but direct css??
@@ -159,4 +174,3 @@ function flipToWhite(sq){
         sq.addClass('white');
     }
 }
-

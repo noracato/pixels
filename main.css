@@ -16,7 +16,20 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    filter: blur(0.5em);
+    mix-blend-mode: color-dodge;
+    /* mix-blend-mode: screen; */
+    /* filter: blur(0.5em); */
+    animation: bluury 40s cubic-bezier(0.19, 1, 0.22, 1) 0s infinite;
+}
+
+.underlay {
+    background-image: url(assets/noise.svg);
+    filter: grayscale();
+    opacity: 0.5;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: -1;
 }
 
 .row {
@@ -27,12 +40,14 @@ body {
 .square {
     width: 2vw;
     height: 2vw;
-    transition: background-color 2s ease-in-out
+    transition: background-color 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: row;
     /* , filter 2s ease-in-out; */
 }
 
 .state-1 {
-    background-color: var(--state-1-color);
+    background: var(--state-1-color);
 }
 
 .state-2 {
@@ -45,4 +60,23 @@ body {
 
 .white {
     background-color: white !important;
+}
+
+.square.mini {
+    width: 1vw;
+    height: 1vw;
+}
+
+@keyframes bluury {
+    from {
+        filter: blur(0.6em);
+    }
+
+    50% {
+        filter: blur(3em);
+    }
+
+    to {
+        filter: blur(0.6em);
+    }
 }
