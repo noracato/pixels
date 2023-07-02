@@ -2,6 +2,50 @@ let squareViewWidth = 2;
 let squareWidth = $(window).width() / (100/ squareViewWidth);
 
 $( document ).ready(fillScreen);
+$( document ).click(setupAudio);
+////////////////////
+
+let audioCtx;
+let analyser;
+
+// get the audio element
+let audioElement = (new Audio('assets/ambient piace2.wav'));
+
+// pass it into the audio context
+let track;
+
+let playing = false;
+let setup = false;
+
+function setupAudio() {
+    if (!setup){
+        audioCtx = new AudioContext();
+        analyser = audioCtx.createAnalyser();
+        // audioElement= document.querySelector("audio");
+        track = audioCtx.createMediaElementSource(audioElement);
+        track.connect(audioCtx.destination);
+        setup = true;
+    }
+
+    console.log('playing')
+
+    // Check if context is in suspended state (autoplay policy)
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+
+    // Play or pause track depending on state
+    if (!playing) {
+        audioElement.play();
+        playing = true;
+    } else {
+        audioElement.pause();
+        playing = false;
+    }
+}
+
+
+///////////////
 
 function fillScreen() {
     let amount = $(window).height() / squareWidth;
